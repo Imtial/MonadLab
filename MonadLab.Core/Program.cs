@@ -2,6 +2,6 @@
 
 string? name = "Asif";
 
-var maybeName = Option<string>.From(name);
+var maybeName = OptionExtensions.MaybeCapitalized(name);
 
 Console.WriteLine(maybeName);

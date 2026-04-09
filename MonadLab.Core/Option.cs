@@ -12,6 +12,8 @@ public abstract record Option<T>
         null => new Option<T>.None(),
         T value => new Option<T>.Some(value)
     };
+
+    public static implicit operator Option<T>(T? maybeValue) => From(maybeValue);
 }
 
 public static class OptionExtensions
@@ -63,4 +65,6 @@ public static class OptionExtensions
         Option<T>.Some some => binder(some.Value),
         _ => new Option<U>.None()
     };
+
+    public static Option<string> MaybeCapitalized(string? value) => value?.ToUpper();
 }
