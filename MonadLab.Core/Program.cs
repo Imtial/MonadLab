@@ -1,7 +1,10 @@
 ﻿using MonadLab.Core;
 
-string? name = "Asif";
+var result = new Result<int, string>.Ok(4);
 
-var maybeName = OptionExtensions.MaybeCapitalized(name);
+var option =
+    result.Map(x => x.ToString())
+        .ToOption()
+        .Map(int.Parse);
 
-Console.WriteLine(maybeName);
+Console.WriteLine(option);

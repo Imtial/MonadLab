@@ -56,7 +56,7 @@ public static class OptionExtensions
 
     public static Option<U> Map<T, U>(this Option<T> option, Func<T, U> mapper) => option switch
     {
-        Option<T>.Some some => new Option<U>.Some(mapper(some.Value)),
+        Option<T>.Some some => mapper(some.Value),
         _ => new Option<U>.None()
     };
 
@@ -65,6 +65,4 @@ public static class OptionExtensions
         Option<T>.Some some => binder(some.Value),
         _ => new Option<U>.None()
     };
-
-    public static Option<string> MaybeCapitalized(string? value) => value?.ToUpper();
 }
