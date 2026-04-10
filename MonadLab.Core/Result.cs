@@ -6,6 +6,14 @@ public abstract record Result<T, E>
 
     public sealed record Ok(T Value) : Result<T, E>;
     public sealed record Error(E ErrValue) : Result<T, E>;
+
+    public static Result<T, E> FromOk(T value) => new Ok(value);
+
+    public static Result<T, E> FromError(E error) => new Error(error);
+
+    public static implicit operator Result<T, E>(T value) => FromOk(value);
+
+    public static implicit operator Result<T, E>(E error) => FromError(error);
 }
 
 public static class ResultExtensions

@@ -42,7 +42,7 @@ public static class OptionExtensions
         _ => fn()
     };
 
-    public static T? GetOrDefault<T>(this Option<T> option) => option switch
+    public static T? Get<T>(this Option<T> option) => option switch
     {
         Option<T>.Some some => some.Value,
         _ => default
@@ -60,9 +60,51 @@ public static class OptionExtensions
         _ => new Option<U>.None()
     };
 
+    public static Option<U> Map2<T1, T2, U>(this (Option<T1> Option1, Option<T2> Option2) optionPair, Func<T1, T2, U> mapper) => optionPair switch
+    {
+        (Option<T1>.Some some1, Option<T2>.Some some2) => mapper(some1.Value, some2.Value),
+        _ => new Option<U>.None()
+    };
+
     public static Option<U> Bind<T, U>(this Option<T> option, Func<T, Option<U>> binder) => option switch
     {
         Option<T>.Some some => binder(some.Value),
         _ => new Option<U>.None()
+    };
+
+    public static List<T> ToList<T>(this Option<T> option) => option switch
+    {
+        Option<T>.Some some => [ some.Value ],
+        _ => []
+    };
+
+    public static Option<T> OrElse<T>(this Option<T> option, Option<T> ifNone) => option switch
+    {
+        Option<T>.None _ => ifNone,
+        _ => option
+    };
+
+    public static Option<T> OrElseWith<T>(this Option<T> option, Func<Option<T>> fnIfNone) => option switch
+    {
+        Option<T>.None _ => fnIfNone(),
+        _ => option
+    };
+
+    public static Option<T> Flatten<T>(this Option<Option<T>> maybeOption) => maybeOption switch
+    {
+        Option<Option<T>>.Some someOption when someOption.IsSome() => someOption.Value,
+        _ => new Option<T>.None()
+    };
+
+    public static bool Contains<T>(this Option<T> option, T query) => option switch
+    {
+        Option<T>.Some some => some.Value!.Equals(query),
+        _ => false
+    };
+
+    public static bool Contains<T>(this Option<T> option, Func<T, bool> predicate) => option switch
+    {
+        Option<T>.Some some => predicate(some.Value),
+        _ => false
     };
 }
