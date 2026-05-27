@@ -1,5 +1,4 @@
 ﻿using MonadLab.Core;
 
-var result = Utils.Parse(" s ");
-
-Console.WriteLine(result);
+var id = new OneOf<int, Guid, string>.First(1);
+Console.WriteLine(id);
